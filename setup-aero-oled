@@ -1,0 +1,26 @@
+#!/bin/bash
+XRANDR_PRIMARY_DISPLAY=xrandr | grep "connected primary" | cut -d" " -f1
+
+# Scale the display to my liking
+xrandr --output $XRANDR_PRIMARY_DISPLAY --scale 1.25x1.25
+
+# Set up AX1650x WiFi
+# http://support.killernetworking.com/knowledge-base/killer-ax1650-in-debian-ubuntu-16-04/
+sudo apt install -y git
+cd /tmp
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/backport-iwlwifi.git
+cd backport-iwlwifi/
+make defconfig-iwlwifi-public
+make -j4
+sudo make install
+sudo git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
+cd linux-firmware/
+sudo cp iwlwifi-* /lib/firmware/
+
+# Set up OLED brightness adjustment
+# https://github.com/nerdo/xrandr-brightness.git
+cd /tmp
+git clone https://github.com/nerdo/xrandr-brightness.git
+cd xrandr-brightness
+sudo make install
+
