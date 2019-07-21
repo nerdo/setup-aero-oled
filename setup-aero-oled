@@ -24,3 +24,6 @@ git clone https://github.com/nerdo/xrandr-brightness.git
 cd xrandr-brightness
 sudo make install
 
+# System sleep scripts
+# stop-bluetooth-service-before-sleep: fixes issue where connected bluetooth devices prevented sleep.
+cp systemd/system-sleep/* /lib/systemd/system-sleep
