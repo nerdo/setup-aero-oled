@@ -25,6 +25,10 @@ sudo make install
 # stop-bluetooth-service-before-sleep: fixes issue where connected bluetooth devices prevented sleep.
 cp systemd/system-sleep/* /lib/systemd/system-sleep
 
+# Fix bluetooth audio issues (https://askubuntu.com/a/1100224)
+sudo sed -i 's/^\[General\]$/[General]\nAutoConnect=true\nMultiProfile=multiple/' /etc/bluetooth/main.conf
+sudo systemctl restart bluetooth
+
 # Trackpad synaptics drivers (https://ubuntuforums.org/showthread.php?t=2391805)
 sudo apt install -y xserver-xorg-input-synaptics
 
