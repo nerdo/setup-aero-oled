@@ -1,8 +1,5 @@
-#!/bin/bash
+#/bin/bash
 XRANDR_PRIMARY_DISPLAY=xrandr | grep "connected primary" | cut -d" " -f1
-
-# Scale the display to my liking
-xrandr --output $XRANDR_PRIMARY_DISPLAY --scale 1.25x1.25
 
 # Set up AX1650x WiFi
 # http://support.killernetworking.com/knowledge-base/killer-ax1650-in-debian-ubuntu-16-04/
@@ -27,3 +24,16 @@ sudo make install
 # System sleep scripts
 # stop-bluetooth-service-before-sleep: fixes issue where connected bluetooth devices prevented sleep.
 cp systemd/system-sleep/* /lib/systemd/system-sleep
+
+# Trackpad synaptics drivers (https://ubuntuforums.org/showthread.php?t=2391805)
+sudo apt install -y xserver-xorg-input-synaptics
+
+# Fix quirk with edges of touchpad (https://askubuntu.com/a/1104201)
+sudo cat ./xorg.conf.d/70-synaptics.conf >> /usr/share/X11/xorg.conf.d/70-synaptics.conf
+
+echo
+echo "--------------------------------------------------------------------------------------------"
+echo "-    A REBOOT IS REQUIRED IN ORDER FOR YOUR SYSTEM TO USE THE UPDATED TRACKPAD DRIVERS!    -"
+echo "-  When you reboot, run the 'setup-trackpad-after-reboot' script to enable palm detection. -"
+echo "--------------------------------------------------------------------------------------------"
+echo
