@@ -1,0 +1,36 @@
+#!/bin/bash
+# Instsall libfprint from https://github.com/iafilatov/libfprint
+
+# prerequisites
+sudo apt install -y \
+    ninja-build \
+    libglib2.0-dev \
+    libusb-1.0-0-dev \
+    libnss3-dev \
+    libx11-dev \
+    libxv-dev \
+    pkg-config \
+    python3-venv \
+    libpam-fprintd
+
+# clone repository
+cd /tmp
+git clone https://github.com/iafilatov/libfprint.git
+cd libfprint
+#git checkout elan-touch
+
+# install meson locally
+python3 -m venv venv
+. venv/bin/activate
+pip install -U pip
+pip install meson
+
+# build libfprint
+venv/bin/meson builddir
+venv/bin/meson configure builddir -Ddoc=false -Dlibdir=lib
+cd builddir
+ninja
+sudo ninja install
+
+# enroll fingerprint
+fprintd-enroll
